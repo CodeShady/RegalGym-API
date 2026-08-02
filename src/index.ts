@@ -80,8 +80,12 @@ app.get("/healthz", (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Running server on http://localhost:8080");
-});
+// Only listen on server if NOT running on Vercel
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Running server on http://localhost:${PORT}`);
+  });
+}
 
 export default app;
