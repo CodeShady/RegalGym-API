@@ -1,7 +1,6 @@
 import * as cheerio from "cheerio";
 
 export interface GymClass {
-  id: string;
   name: string;
   day: string;
   startTime: string;
@@ -30,16 +29,12 @@ export function extractClasses(tableHtml: string): GymClass[] {
     const registerUrl = registerLink.attr("href") ?? "";
     const registerText = registerLink.text().trim().toLowerCase();
 
-    // Pull the Jackrabbit class ID from the URL
-    const id = new URL(registerUrl).searchParams.get("preLoadClassID") ?? "";
-
     const [startTime, endTime] = timeCell
       .text()
       .trim()
       .split(/\s*-\s*/);
 
     classes.push({
-      id,
       name: classCell.text().trim(),
       day: dayCell.text().trim(),
       ...{startTime: startTime ?? ""},
