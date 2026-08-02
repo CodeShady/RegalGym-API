@@ -76,7 +76,7 @@ app.post("/api/v1/classes", async (req: Request, res: Response) => {
   });
 });
 
-app.get("/healthz", (req, res) => {
+app.get("/api/v1/healthz", (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() })
 })
 
