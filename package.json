@@ -1,0 +1,32 @@
+{
+  "name": "regalgym-api",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/CodeShady/RegalGym-API#readme",
+  "bugs": {
+    "url": "https://github.com/CodeShady/RegalGym-API/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeShady/RegalGym-API.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.2",
+    "tsx": "^4.23.4",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "express": "^5.2.1"
+  }
+}
