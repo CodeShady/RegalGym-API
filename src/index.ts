@@ -57,12 +57,15 @@ app.post("/api/v1/classes", async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Unable to extract `src` attribute from <script> in iframe. Aborting." });
   }
 
-  const srcUrl = srcUrlMatch[2];
-  if (!srcUrl) {
-    return res.status(500).json({ message: "`srcUrl` was undefined. Aborting." });
+  let srcUrl: URL;
+  try {
+    srcUrl = new URL(srcUrlMatch[2]);
+    srcUrl.searchParams.delete("hidecols");
+  } catch {
+    return res.status(500).json({ message: "Parsing `srcUrl` errored. Aborting." });
   }
 
-  const srcData = await fetch(srcUrl).then((r) => r.text());
+  const srcData = await fetch(srcUrl.href).then((r) => r.text());
   const table = srcData.match(/<table[\s\S]*<\/table>/)?.[0];
 
   if (!table) {

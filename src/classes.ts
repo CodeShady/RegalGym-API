@@ -2,10 +2,16 @@ import * as cheerio from "cheerio";
 
 export interface GymClass {
   name: string;
+  description: string;
   day: string;
   startTime: string;
   endTime: string;
+  gender: string;
+  ages: string;
   openings: number;
+  classStarts: string;
+  classEnds: string;
+  session: string;
   tuition: number;
   status: "register" | "waitlist";
   registerUrl: string;
@@ -17,30 +23,39 @@ export function extractClasses(tableHtml: string): GymClass[] {
   const classes: GymClass[] = [];
 
   $("tbody > tr").each((_, row) => {
-    const registerCell = $(row).find("td").eq(0);
-    const classCell = $(row).find("th");
-    const dayCell = $(row).find("td").eq(1);
-    const timeCell = $(row).find("td").eq(2);
-    const openingsCell = $(row).find("td").eq(3);
-    const tuitionCell = $(row).find("td").eq(4);
+    const getCell = (title: string): string =>
+      $(row)
+        .find(`[data-title="${title}"]`)
+        .first()
+        .text()
+        .replace(/\u00a0/g, "")
+        .trim();
 
-    const registerLink = registerCell.find("a");
+    const registerCell = $(row).find('[data-title="Register"]').first();
+    const registerLink = registerCell.find("a").first();
 
     const registerUrl = registerLink.attr("href") ?? "";
     const registerText = registerLink.text().trim().toLowerCase();
 
-    const [startTime, endTime] = timeCell
-      .text()
-      .trim()
-      .split(/\s*-\s*/);
+    const times = getCell("Times");
+    const [startTime = "", endTime = ""] = times.split(/\s*-\s*/);
+
+    const openingsText = getCell("Openings");
+    const tuitionText = getCell("Tuition");
 
     classes.push({
-      name: classCell.text().trim(),
-      day: dayCell.text().trim(),
-      ...{startTime: startTime ?? ""},
-      ...{endTime: endTime ?? ""},
-      openings: Number(openingsCell.text().trim()),
-      tuition: Number(tuitionCell.text().trim()),
+      name: getCell("Class"),
+      description: getCell("Description"),
+      day: getCell("Days"),
+      startTime,
+      endTime,
+      gender: getCell("Gender"),
+      ages: getCell("Ages"),
+      openings: Number(openingsText) || 0,
+      classStarts: getCell("Class Starts"),
+      classEnds: getCell("Class Ends"),
+      session: getCell("Session"),
+      tuition: Number(tuitionText) || 0,
       status: registerText === "waitlist" ? "waitlist" : "register",
       registerUrl,
     });
