@@ -31,6 +31,10 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.post("/api/v1/classes", async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res.status(400).json({ message: "Invalid payload" });
+  }
+
   const { iframe } = req.body;
 
   if (!iframe?.trim()) {
