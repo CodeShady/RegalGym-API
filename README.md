@@ -1,4 +1,4 @@
-# RegalAPI
+# RegalAPI 👑
 
 ## Fetching classes
 
@@ -8,7 +8,7 @@ You can fetch a list of classes in JSON format with the following payload.
 
 ### Payload
 
-```
+```json
 {
   "iframe": "https://www-regalgym-com.filesusr.com/html/7db962_695f6d7c92435efb76c3b68b514d4521.html"
 }
@@ -16,7 +16,7 @@ You can fetch a list of classes in JSON format with the following payload.
 
 ### Returns
 
-```
+```json
 {
   "message": "OK",
   "data": [
